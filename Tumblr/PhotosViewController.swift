@@ -21,6 +21,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.rowHeight = 130
         
         // Network request snippet
         let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV")!
@@ -41,6 +42,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                 // TODO: Get the posts and store in posts property
                 
                 // TODO: Reload the table view
+                self.tableView.reloadData()
             }
         }
         task.resume()
@@ -63,7 +65,19 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        
+        let post = posts[indexPath.row]
+        if let photos = post["photos"] as? [[String: Any]]
+        {
+            let photo = photos[0]
+            let originalSize = photo["original_size"] as! [String: Any]
+            let urlString = originalSize["url"] as! String
+            let url = URL(string: urlString)
+            cell.pictureImageView.af_setImage(withURL: url!)
 
+            // photos is NOT nil, we can use it!
+            // TODO: Get the photo url
+        }
         
         return cell
     }
