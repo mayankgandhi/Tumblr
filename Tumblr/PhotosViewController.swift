@@ -42,6 +42,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                 // TODO: Get the posts and store in posts property
                 
                 // TODO: Reload the table view
+                
                 self.tableView.reloadData()
             }
         }
@@ -65,8 +66,8 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        let post = self.posts[indexPath.row]
         
-        let post = posts[indexPath.row]
         if let photos = post["photos"] as? [[String: Any]]
         {
             let photo = photos[0]
